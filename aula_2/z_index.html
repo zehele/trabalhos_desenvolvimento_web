@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Position e Z-Index</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #f1f5f9;
+            color: #1e293b;
+            padding: 24px;
+            padding-bottom: 120px; /* espaço para o fixed não cobrir o final */
+        }
+
+        h2 {
+            margin-top: 32px;
+            color: #1e1b4b;
+        }
+
+        /* 1. STATIC */
+        div.static {
+            position: static;
+            border: 3px solid #3f21ad;
+            padding: 10px;
+            background: #e0e7ff;
+        }
+
+        /* 2. RELATIVE */
+        div.relative {
+            position: relative;
+            left: 30px;
+            border: 5px solid #3f21ad;
+            padding: 10px;
+            background: #c7d2fe;
+        }
+
+        /* 3. FIXED */
+        div.fixed {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            width: 260px;
+            border: 4px solid #dc2626;
+            background: #fee2e2;
+            padding: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            /* O fixed já fica por cima de quase tudo pelo fluxo, mas pode receber z-index */
+            z-index: 1000;
+        }
+
+        /* 4. RELATIVE + ABSOLUTE */
+        div.relative1 {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            height: 180px;
+            border: 4px solid #3f21ad;
+            background: #ede9fe;
+            padding: 10px;
+        }
+
+        div.absolute1 {
+            position: absolute;
+            top: 40px;
+            right: 20px;
+            width: 180px;
+            height: 90px;
+            border: 2px solid #7c3aed;
+            background: #ddd6fe;
+            padding: 8px;
+        }
+
+        /* ===================================================
+           5. DEMONSTRAÇÃO DO Z-INDEX (CAMADAS / PROFUNDIDADE)
+           =================================================== */
+        .palco-zindex {
+            position: relative;
+            height: 220px;
+            margin-top: 20px;
+            background: #ffffff;
+            border: 2px dashed #94a3b8;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        /* Base comum para as cartas de exemplo */
+        .carta {
+            position: absolute;
+            width: 170px;
+            height: 130px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Caixa Vermelha (Vem primeiro no HTML, mas colocamos na frente com z-index) */
+        .caixa-vermelha {
+            top: 20px;
+            left: 20px;
+            background-color: #ef4444;
+            color: white;
+            /* Experimente mudar este z-index para 1 ou 5 para ver ela ir para trás ou para frente! */
+            z-index: 3;
+        }
+
+        /* Caixa Verde (Fica no meio) */
+        .caixa-verde {
+            top: 50px;
+            left: 90px;
+            background-color: #10b981;
+            color: white;
+            z-index: 2;
+        }
+
+        /* Caixa Azul (Vem por último no HTML, mas fica no fundo devido ao z-index baixo) */
+        .caixa-azul {
+            top: 80px;
+            left: 160px;
+            background-color: #3b82f6;
+            color: white;
+            z-index: 1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>posição: estática (position: static)</h2>
+    <p>É o comportamento padrão do navegador. O elemento segue o fluxo normal da página. <strong>Atenção:</strong> propriedades como <code>top</code>, <code>left</code> e <code>z-index</code> <strong>NÃO funcionam</strong> aqui.</p>
+    <div class="static">Aqui - position: static;</div>
+
+    <h2>posição: relativa (position: relative)</h2>
+    <p>O elemento continua no fluxo, mas pode ser deslocado a partir do seu local de origem sem empurrar os vizinhos.</p>
+    <div class="relative">Aqui - position: relative; (deslocado 30px à esquerda)</div>
+
+    <h2>posição: fixa (position: fixed)</h2>
+    <p>Fica preso na janela da tela (viewport). Não sai do lugar mesmo rolando a página. Olhe no canto inferior direito:</p>
+    <div class="fixed">
+        <strong>Aviso Fixo</strong><br>
+        Aqui - position: fixed (com z-index: 1000 para não sumir atrás de nada).
+    </div>
+
+    <h2>posição: absoluta (position: absolute)</h2>
+    <p>Sai do fluxo normal e se alinha em relação ao primeiro ancestral que tiver <code>position</code> diferente de <code>static</code> (no caso, a caixa roxa de fora):</p>
+    <div class="relative1">
+        Pai (position: relative)
+        <div class="absolute1">Filho (position: absolute)</div>
+    </div>
+
+    <!-- SEÇÃO NOVA SOBRE Z-INDEX -->
+    <h2>O que é e como funciona o z-index?</h2>
+    <p>
+        Imagine a tela como um plano 3D:
+        <br>• <strong>Eixo X:</strong> horizontal (esquerda / direita).
+        <br>• <strong>Eixo Y:</strong> vertical (cima / baixo).
+        <br>• <strong>Eixo Z:</strong> profundidade (saindo da tela em direção aos seus olhos).
+    </p>
+
+    <div class="palco-zindex">
+        <div class="carta caixa-vermelha">
+            <span>Caixa 1</span>
+            <span>z-index: 3</span>
+            <small>(Fica por cima de todas)</small>
+        </div>
+
+        <div class="carta caixa-verde">
+            <span>Caixa 2</span>
+            <span>z-index: 2</span>
+            <small>(Fica no meio)</small>
+        </div>
+
+        <div class="carta caixa-azul">
+            <span>Caixa 3</span>
+            <span>z-index: 1</span>
+            <small>(Fica no fundo)</small>
+        </div>
+    </div>
+
+</body>
+</html>

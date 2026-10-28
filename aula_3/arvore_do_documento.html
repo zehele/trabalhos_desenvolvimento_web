@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Árvore do Documento HTML - Mapa Mental Interativo</title>
+  <!-- Tailwind CSS: Uma caixinha de ferramentas pronta para deixar o site bonito e organizado -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Fontes do Google para deixar as letras fáceis de ler no computador e no celular -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* 1. Tipo de letra padrão da página */
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* 2. Tipo de letra para os exemplos de código (com letras de tamanho igual, estilo programador) */
+    .code-font {
+      font-family: 'Fira Code', monospace;
+    }
+    
+    /* 3. VISUAL DAS CAIXINHAS AZUIS CLICÁVEIS: */
+    .svg-node {
+      /* Muda a setinha do mouse para a mãozinha de clique */
+      cursor: pointer;
+      /* Faz a mudança de cor acontecer de forma suave, sem piscar */
+      transition: all 0.2s ease;
+    }
+
+    /* A cor de fundo e a bordinha azul da caixinha */
+    .svg-node rect {
+      transition: all 0.2s ease;
+      fill: #2d56a3;         /* Cor azul da caixinha */
+      stroke: #5988c8;       /* Cor da bordinha azul-claro */
+      stroke-width: 2px;     /* Grossura da bordinha */
+    }
+
+    /* A cor da letrinha que fica escrita dentro da caixinha (ex: "html", "body") */
+    .svg-node text {
+      fill: #ffffff;         /* Cor branca do texto */
+      font-weight: 700;      /* Letra em negrito para enxergar bem */
+      user-select: none;     /* Evita que o texto seja selecionado por engano ao dar dois cliques */
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* O que acontece quando você PASSA O MOUSE em cima da caixinha: */
+    .svg-node:hover rect {
+      fill: #3b6ece;         /* Fica num azul um pouquinho mais claro */
+      stroke: #93c5fd;       /* Borda azul brilhante */
+      filter: drop-shadow(0 4px 8px rgba(59, 130, 246, 0.4)); /* Cria uma sombrinha suave embaixo */
+    }
+
+    /* O que acontece quando você CLICA na caixinha (ela fica ATIVA): */
+    .svg-node.active rect {
+      fill: #1e3a8a;         /* Fundo azul escuro */
+      stroke: #facc15;       /* Bordinha amarela em destaque! */
+      stroke-width: 3px;     /* Borda mais grossa para você saber qual escolheu */
+      filter: drop-shadow(0 0 12px rgba(250, 204, 21, 0.7)); /* Brilho dourado ao redor */
+    }
+
+    /* A cor da letra na caixinha que você clicou */
+    .svg-node.active text {
+      fill: #fef08a;         /* Letra amarelinha combinando com a borda */
+    }
+
+    /* 4. AS LINHAS QUE LIGAM UMA CAIXINHA NA OUTRA (Galhos da árvore): */
+    .tree-path {
+      stroke: #5b89b4;       /* Cor azul acinzentado das linhas */
+      stroke-width: 2.2px;   /* Grossura da linha */
+      stroke-linecap: square;/* Pontinha reta */
+      stroke-linejoin: miter;/* Cantos retos e quadradinhos em 90 graus */
+      fill: none;            /* Linha oca, sem preenchimento dentro */
+    }
+
+    /* 5. Barra de rolagem bonita para quem vê no computador */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-blue-600 selection:text-white">
+
+  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 px-4 py-3 sm:px-6">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-blue-400 font-black text-xl">
+          &lt;/&gt;
+        </div>
+        <div>
+          <h1 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+            Árvore do Documento <span class="text-xs px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 font-semibold border border-blue-500/30">DOM Interativo</span>
+          </h1>
+          <p class="text-xs text-slate-400">Silva, Maurício Samy. CSS3, p. 105</p>
+        </div>
+      </div>
+      
+      <!-- Controles rápidos -->
+      <div class="flex items-center gap-2">
+        <button id="btn-toggle-raw-code" class="text-xs sm:text-sm px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5">
+          <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+          <span>Ver Código HTML Equivalente</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto w-full p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1 items-start">
+    
+    <!-- LADO ESQUERDO: ÁRVORE DO DOCUMENTO (O mapa mental idêntico ao slide do livro) -->
+    <section class="lg:col-span-8 bg-[#243746] border border-slate-700/80 rounded-2xl p-4 sm:p-6 shadow-2xl overflow-x-auto flex flex-col justify-between">
+      
+      <div class="w-full">
+        <!-- SVG é uma tecnologia para desenhar formas na tela (linhas, caixas e textos) sem perder qualidade -->
+        <svg viewBox="0 0 940 550" class="w-full min-w-[700px] h-auto select-none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <!-- Efeito de sombrinha preta atrás das letras amarelas do título -->
+            <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+              <feDropShadow dx="2" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.6"/>
+            </filter>
+          </defs>
+
+          <!-- Título principal em amarelo, idêntico à imagem de referência -->
+          <text x="470" y="44" text-anchor="middle" fill="#f5c444" font-size="34" font-weight="800" letter-spacing="0.5" filter="url(#shadow)">
+            Árvore do documento
+          </text>
+
+          <!-- ========================================================== -->
+          <!-- LINHAS QUE LIGAM AS CAIXINHAS (Mostram quem é pai de quem) -->
+          <!-- ========================================================== -->
+          
+          <!-- Linha que sai de <html> e vai para <head> e <body> -->
+          <path d="M 470 115 L 470 134" class="tree-path" />
+          <path d="M 390 134 L 545 134" class="tree-path" />
+          <path d="M 390 134 L 390 155" class="tree-path" />
+          <path d="M 545 134 L 545 155" class="tree-path" />
+
+          <!-- Linha reta que desce direto de <body> para a <div> logo abaixo -->
+          <path d="M 545 195 L 545 225" class="tree-path" />
+
+          <!-- Linhas que saem da <div> e dividem para os 4 blocos: header, section, section e footer -->
+          <path d="M 545 265 L 545 292" class="tree-path" />
+          <!-- Barra horizontal de distribuição -->
+          <path d="M 145 292 L 815 292" class="tree-path" />
+          <path d="M 145 292 L 145 315" class="tree-path" /> <!-- Liga no header -->
+          <path d="M 365 292 L 365 315" class="tree-path" /> <!-- Liga na primeira section -->
+          <path d="M 590 292 L 590 315" class="tree-path" /> <!-- Liga na segunda section -->
+          <path d="M 815 292 L 815 315" class="tree-path" /> <!-- Liga no footer -->
+
+          <!-- Linha que sai de <header> e liga nos títulos <h1> e <h2> -->
+          <path d="M 145 355 L 145 374" class="tree-path" />
+          <path d="M 85 374 L 205 374" class="tree-path" />
+          <path d="M 85 374 L 85 394" class="tree-path" />
+          <path d="M 205 374 L 205 394" class="tree-path" />
+
+          <!-- Linha que sai da 1ª <section> e liga na lista <ul> -->
+          <path d="M 365 355 L 365 394" class="tree-path" />
+
+          <!-- Linhas que saem da lista <ul> e ligam nos 3 itens <li> -->
+          <path d="M 365 434 L 365 454" class="tree-path" />
+          <path d="M 275 454 L 455 454" class="tree-path" />
+          <path d="M 275 454 L 275 474" class="tree-path" />
+          <path d="M 365 454 L 365 474" class="tree-path" />
+          <path d="M 455 454 L 455 474" class="tree-path" />
+
+          <!-- Linha que sai da 2ª <section> e liga no <h3> e no <pre> -->
+          <path d="M 590 355 L 590 374" class="tree-path" />
+          <path d="M 530 374 L 650 374" class="tree-path" />
+          <path d="M 530 374 L 530 394" class="tree-path" />
+          <path d="M 650 374 L 650 394" class="tree-path" />
+
+          <!-- Linha que sai do <footer> e liga no parágrafo <p> -->
+          <path d="M 815 355 L 815 394" class="tree-path" />
+
+          <!-- Linha que sai do parágrafo <p> e liga nas tags <em> e <a> -->
+          <path d="M 815 434 L 815 454" class="tree-path" />
+          <path d="M 755 454 L 875 454" class="tree-path" />
+          <path d="M 755 454 L 755 474" class="tree-path" />
+          <path d="M 875 454 L 875 474" class="tree-path" />
+
+
+          <!-- ========================================================== -->
+          <!-- AS CAIXINHAS AZUIS QUE VOCÊ CLICA (Cada uma é uma tag HTML) -->
+          <!-- ========================================================== -->
+
+          <!-- 1º PASSO: A tag principal <html> (A mãe de todas) -->
+          <g class="svg-node active" id="svg-node-html" onclick="selectNode('html')">
+            <rect x="420" y="75" width="100" height="40" rx="8" />
+            <text x="470" y="100" text-anchor="middle" font-size="17">html</text>
+          </g>
+
+          <!-- 2º PASSO: As duas primeiras filhas: <head> (invisível) e <body> (o que a gente vê) -->
+          <g class="svg-node" id="svg-node-head" onclick="selectNode('head')">
+            <rect x="340" y="155" width="100" height="40" rx="8" />
+            <text x="390" y="180" text-anchor="middle" font-size="16">head</text>
+          </g>
+          <g class="svg-node" id="svg-node-body" onclick="selectNode('body')">
+            <rect x="495" y="155" width="100" height="40" rx="8" />
+            <text x="545" y="180" text-anchor="middle" font-size="16">body</text>
+          </g>
+
+          <!-- 3º PASSO: A caixinha <div> que fica logo abaixo de <body> para organizar tudo -->
+          <g class="svg-node" id="svg-node-div" onclick="selectNode('div')">
+            <rect x="495" y="225" width="100" height="40" rx="8" />
+            <text x="545" y="250" text-anchor="middle" font-size="16">div</text>
+          </g>
+
+          <!-- 4º PASSO: Os 4 blocos organizadores do site: topo, meio e rodapé -->
+          <g class="svg-node" id="svg-node-header" onclick="selectNode('header')">
+            <rect x="95" y="315" width="100" height="40" rx="8" />
+            <text x="145" y="340" text-anchor="middle" font-size="16">header</text>
+          </g>
+          <g class="svg-node" id="svg-node-section_1" onclick="selectNode('section_1')">
+            <rect x="315" y="315" width="100" height="40" rx="8" />
+            <text x="365" y="340" text-anchor="middle" font-size="16">section</text>
+          </g>
+          <g class="svg-node" id="svg-node-section_2" onclick="selectNode('section_2')">
+            <rect x="540" y="315" width="100" height="40" rx="8" />
+            <text x="590" y="340" text-anchor="middle" font-size="16">section</text>
+          </g>
+          <g class="svg-node" id="svg-node-footer" onclick="selectNode('footer')">
+            <rect x="765" y="315" width="100" height="40" rx="8" />
+            <text x="815" y="340" text-anchor="middle" font-size="16">footer</text>
+          </g>
+
+          <!-- 5º PASSO: As tags de texto e listas dentro de cada bloco -->
+          <!-- Título <h1> e subtítulo <h2> dentro do header -->
+          <g class="svg-node" id="svg-node-h1" onclick="selectNode('h1')">
+            <rect x="50" y="394" width="70" height="38" rx="8" />
+            <text x="85" y="418" text-anchor="middle" font-size="15">h1</text>
+          </g>
+          <g class="svg-node" id="svg-node-h2" onclick="selectNode('h2')">
+            <rect x="170" y="394" width="70" height="38" rx="8" />
+            <text x="205" y="418" text-anchor="middle" font-size="15">h2</text>
+          </g>
+
+          <!-- A lista <ul> dentro da 1ª seção -->
+          <g class="svg-node" id="svg-node-ul" onclick="selectNode('ul')">
+            <rect x="325" y="394" width="80" height="38" rx="8" />
+            <text x="365" y="418" text-anchor="middle" font-size="15">ul</text>
+          </g>
+
+          <!-- Título menor <h3> e texto <pre> dentro da 2ª seção -->
+          <g class="svg-node" id="svg-node-h3" onclick="selectNode('h3')">
+            <rect x="495" y="394" width="70" height="38" rx="8" />
+            <text x="530" y="418" text-anchor="middle" font-size="15">h3</text>
+          </g>
+          <g class="svg-node" id="svg-node-pre" onclick="selectNode('pre')">
+            <rect x="615" y="394" width="70" height="38" rx="8" />
+            <text x="650" y="418" text-anchor="middle" font-size="15">pre</text>
+          </g>
+
+          <!-- Parágrafo de texto <p> dentro do rodapé footer -->
+          <g class="svg-node" id="svg-node-p" onclick="selectNode('p')">
+            <rect x="775" y="394" width="80" height="38" rx="8" />
+            <text x="815" y="418" text-anchor="middle" font-size="15">p</text>
+          </g>
+
+          <!-- 6º PASSO: Os menores elementos lá na ponta dos galhos: os 3 itens de lista <li>, o itálico <em> e o link <a> -->
+          <g class="svg-node" id="svg-node-li1" onclick="selectNode('li')">
+            <rect x="245" y="474" width="60" height="36" rx="8" />
+            <text x="275" y="497" text-anchor="middle" font-size="15">li</text>
+          </g>
+          <g class="svg-node" id="svg-node-li2" onclick="selectNode('li')">
+            <rect x="335" y="474" width="60" height="36" rx="8" />
+            <text x="365" y="497" text-anchor="middle" font-size="15">li</text>
+          </g>
+          <g class="svg-node" id="svg-node-li3" onclick="selectNode('li')">
+            <rect x="425" y="474" width="60" height="36" rx="8" />
+            <text x="455" y="497" text-anchor="middle" font-size="15">li</text>
+          </g>
+
+          <g class="svg-node" id="svg-node-em" onclick="selectNode('em')">
+            <rect x="720" y="474" width="70" height="36" rx="8" />
+            <text x="755" y="497" text-anchor="middle" font-size="15">em</text>
+          </g>
+          <g class="svg-node" id="svg-node-a" onclick="selectNode('a')">
+            <rect x="840" y="474" width="70" height="36" rx="8" />
+            <text x="875" y="497" text-anchor="middle" font-size="15">a</text>
+          </g>
+
+          <!-- Crédito do livro de referência original -->
+          <text x="250" y="538" fill="#cbd5e1" font-size="13" font-weight="600">
+            Fonte: Silva, Mauricio Samy. CSS3, p. 105.
+          </text>
+        </svg>
+      </div>
+
+      <!-- Barra de rodapé informativa -->
+      <div class="mt-4 pt-3 border-t border-slate-700/60 flex flex-wrap justify-between items-center text-xs text-slate-300 gap-2">
+        <span class="inline-flex items-center gap-1.5 text-amber-300">
+          <span>💡</span> <span>Clique em qualquer caixa para inspecionar os detalhes e notas.</span>
+        </span>
+        <span class="text-blue-300 flex items-center gap-1">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Representação vetorial fiel ao livro de CSS3
+        </span>
+      </div>
+
+    </section>
+
+    <!-- LADO DIREITO: CARD DE NOTAS E OBSERVAÇÕES DIDÁTICAS -->
+    <aside class="lg:col-span-4 space-y-4">
+      
+      <!-- Card interativo do nó selecionado -->
+      <div class="bg-slate-900 border border-blue-500/40 rounded-2xl p-5 shadow-xl relative overflow-hidden">
+        <div class="absolute -right-10 -top-10 w-32 h-32 bg-blue-600/10 rounded-full blur-2xl pointer-events-none"></div>
+
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-1 rounded bg-blue-500/20 text-blue-400 font-mono font-bold text-base border border-blue-500/30" id="detail-tag-badge">
+              &lt;html&gt;
+            </span>
+            <span class="text-xs text-slate-400 font-medium">Nota de Estudo</span>
+          </div>
+          <span class="text-xs text-amber-300 bg-amber-400/10 border border-amber-400/20 px-2.5 py-0.5 rounded font-semibold" id="detail-type">
+            A Caixa Principal
+          </span>
+        </div>
+
+        <h3 class="text-base sm:text-lg font-bold text-white mb-2" id="detail-title">A tag &lt;html&gt;</h3>
+        <p class="text-xs sm:text-sm text-slate-300 mb-4 leading-relaxed" id="detail-desc">
+          É a caixa que guarda todo o site. Tudo o que existe na sua página precisa ficar dentro dela.
+        </p>
+
+        <!-- Quem é Pai e quem é Filho de forma simples -->
+        <div class="bg-slate-950/70 rounded-xl p-3 border border-slate-800 mb-4 space-y-2 text-xs">
+          <div class="flex justify-between items-center">
+            <span class="text-slate-400">Quem está por fora (Pai):</span>
+            <span class="font-mono text-amber-300 font-bold" id="detail-parent">Ninguém (É a primeira)</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-slate-400">Quem está dentro dela (Filhos):</span>
+            <span class="font-mono text-cyan-300 font-bold" id="detail-children">&lt;head&gt; e &lt;body&gt;</span>
+          </div>
+        </div>
+
+        <!-- Exemplo simples de código -->
+        <div class="mb-4">
+          <div class="flex justify-between items-center mb-1">
+            <span class="text-xs font-semibold text-slate-300">Como você escreve no seu código:</span>
+            <button onclick="copyCurrentCode()" class="text-[11px] text-blue-400 hover:text-blue-300 flex items-center gap-1">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+              Copiar
+            </button>
+          </div>
+          <pre class="bg-slate-950 p-3 rounded-lg text-xs code-font text-emerald-400 border border-slate-800 overflow-x-auto" id="detail-code"><code>&lt;html&gt;
+  &lt;!-- Seu site fica aqui --&gt;
+&lt;/html&gt;</code></pre>
+        </div>
+
+        <!-- Dica simples do dia a dia -->
+        <div class="bg-blue-950/40 border border-blue-800/40 rounded-xl p-3">
+          <h4 class="text-xs font-bold text-yellow-300 flex items-center gap-1.5 mb-1">
+            <span>💡</span> Dica simples:
+          </h4>
+          <p class="text-xs text-slate-300 leading-relaxed" id="detail-tip">
+            Lembre-se sempre de abrir a tag com &lt;html&gt; no começo e fechar com &lt;/html&gt; bem no final da página.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Guia Rápido e Descomplicado -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg space-y-3">
+        <h4 class="text-xs font-bold text-yellow-400 uppercase tracking-wider flex items-center gap-2">
+          <span>👶</span> O Básico que Você Precisa Lembrar
+        </h4>
+
+        <div class="space-y-2.5 text-xs text-slate-300">
+          <div class="p-2.5 rounded-lg bg-slate-950/50 border border-slate-800">
+            <strong class="text-blue-300 block mb-0.5">📦 Tags são como Caixas</strong>
+            Uma tag abre <code class="text-white">&lt;p&gt;</code> e depois fecha <code class="text-white">&lt;/p&gt;</code> com uma barra. O que estiver no meio é o conteúdo.
+          </div>
+          <div class="p-2.5 rounded-lg bg-slate-950/50 border border-slate-800">
+            <strong class="text-amber-300 block mb-0.5">👨‍👧 Pai e Filho (Quem está dentro de quem)</strong>
+            Se você colocar um texto dentro de um <code class="text-white">&lt;body&gt;</code>, o <code class="text-white">&lt;body&gt;</code> é o pai e o texto é o filho!
+          </div>
+          <div class="p-2.5 rounded-lg bg-slate-950/50 border border-slate-800">
+            <strong class="text-emerald-300 block mb-0.5">👀 A regra de ouro do navegador:</strong>
+            O que está no <code class="text-white">&lt;head&gt;</code> não aparece na tela. O que está no <code class="text-white">&lt;body&gt;</code> é o que as pessoas veem!
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+  </main>
+
+  <!-- Modal com código HTML completo correspondente à árvore -->
+  <div id="code-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 class="font-bold text-lg text-white flex items-center gap-2">
+          <span>📄</span> Como essa árvore é escrita em HTML:
+        </h3>
+        <button onclick="toggleRawCodeModal()" class="text-slate-400 hover:text-white p-1">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <p class="text-xs text-slate-300">
+        Observe como a <strong>indentação (espaçamento)</strong> abaixo reproduz exatamente cada nível da árvore da imagem!
+      </p>
+
+      <pre class="bg-slate-950 p-4 rounded-xl text-xs code-font text-sky-300 border border-slate-800 overflow-x-auto max-h-96 leading-relaxed"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="pt-BR"&gt;
+  &lt;head&gt;
+    &lt;title&gt;Minha Página&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div&gt;
+      &lt;!-- Cabeçalho --&gt;
+      &lt;header&gt;
+        &lt;h1&gt;Título Principal&lt;/h1&gt;
+        &lt;h2&gt;Subtítulo da Página&lt;/h2&gt;
+      &lt;/header&gt;
+
+      &lt;!-- Seção com Lista --&gt;
+      &lt;section&gt;
+        &lt;ul&gt;
+          &lt;li&gt;Primeiro item&lt;/li&gt;
+          &lt;li&gt;Segundo item&lt;/li&gt;
+          &lt;li&gt;Terceiro item&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/section&gt;
+
+      &lt;!-- Seção com Código/Texto --&gt;
+      &lt;section&gt;
+        &lt;h3&gt;Seção de Destaque&lt;/h3&gt;
+        &lt;pre&gt;Texto pré-formatado&lt;/pre&gt;
+      &lt;/section&gt;
+
+      &lt;!-- Rodapé --&gt;
+      &lt;footer&gt;
+        &lt;p&gt;
+          Texto com &lt;em&gt;ênfase&lt;/em&gt; e um &lt;a href="#"&gt;link&lt;/a&gt;.
+        &lt;/p&gt;
+      &lt;/footer&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="toggleRawCodeModal()" class="px-4 py-2 text-xs font-semibold rounded-lg bg-blue-600 hover:bg-blue-500 text-white transition">
+          Fechar Visualização
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast de Notificação (ao copiar código) -->
+  <div id="toast" class="fixed bottom-5 right-5 bg-emerald-600 text-white text-xs px-4 py-2.5 rounded-lg shadow-xl opacity-0 transition-opacity duration-300 pointer-events-none flex items-center gap-2">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+    <span>Exemplo de código copiado com sucesso!</span>
+  </div>
+
+  <script>
+    // ==========================================================================
+    // 📖 NOSSO "CADERNO DE ANOTAÇÕES"
+    // Aqui guardamos o que cada tag significa com palavras simples do dia a dia
+    // ==========================================================================
+    const nodesData = {
+      html: {
+        tag: '<html>',
+        type: 'A Caixa Principal',
+        title: 'A Porta de Entrada da Página',
+        desc: 'É a tag que abraça tudo. Seu documento sempre começa abrindo <html> e termina fechando </html> lá na última linha.',
+        parent: 'Nenhum (É a primeira de todas)',
+        children: '<head> e <body>',
+        code: `<!DOCTYPE html>\n<html lang="pt-BR">\n  <!-- Todo o seu código fica aqui dentro -->\n</html>`,
+        tip: 'Quase todo site começa com <!DOCTYPE html> e logo em seguida vem o <html>.'
+      },
+      head: {
+        tag: '<head>',
+        type: 'Os Bastidores (Invisível)',
+        title: 'O "Cérebro" da Página',
+        desc: 'Aqui ficam informações que NÃO aparecem na parte branca da tela. É onde colocamos o título da aba do navegador (<title>) e configurações de fontes e estilo.',
+        parent: '<html>',
+        children: '<title>, <meta>, etc.',
+        code: `<head>\n  <title>Nome que fica na aba</title>\n</head>`,
+        tip: 'O visitante do site não enxerga o conteúdo do <head> na tela, apenas o título lá em cima na aba.'
+      },
+      body: {
+        tag: '<body>',
+        type: 'A Parte Visível',
+        title: 'Onde o Seu Site Acontece!',
+        desc: 'Tudo o que você quer que o usuário veja (textos, botões, imagens, vídeos, links) precisa ficar OBRIGATORIAMENTE dentro do <body>.',
+        parent: '<html>',
+        children: '<div> (no nosso desenho)',
+        code: `<body>\n  Olá, mundo!\n  <p>Meu primeiro site!</p>\n</body>`,
+        tip: 'Uma página só tem um <body>. Se algo sumiu do seu site, confira se não esqueceu de colocar dentro do body!'
+      },
+      div: {
+        tag: '<div>',
+        type: 'Uma Caixa Organizadora',
+        title: 'Um Pacote para Juntar Coisas',
+        desc: 'A tag <div> é como uma caixa de sapato invisível. Ela não muda o texto nem adiciona nada visual por si só, serve apenas para agrupar várias tags juntas.',
+        parent: '<body>',
+        children: '<header>, <section>, <section>, <footer>',
+        code: `<div>\n  <h1>Título</h1>\n  <p>Texto dentro da caixinha</p>\n</div>`,
+        tip: 'Pense na <div> como um envelope: você coloca várias cartas (outras tags) dentro dela para organizar.'
+      },
+      header: {
+        tag: '<header>',
+        type: 'O Cabeçalho',
+        title: 'A Parte Superior da Página',
+        desc: 'Indica que este pedaço é o topo do site. Normalmente é onde colocamos o logotipo, o título principal da página ou um menu de navegação.',
+        parent: '<div>',
+        children: '<h1> e <h2>',
+        code: `<header>\n  <h1>Meu Site</h1>\n  <h2>Aprenda HTML fácil</h2>\n</header>`,
+        tip: 'Não confunda <header> (cabeçalho visível) com <head> (configurações invisíveis da página).'
+      },
+      h1: {
+        tag: '<h1>',
+        type: 'Título Principal',
+        title: 'O Título Mais Importante',
+        desc: 'É a manchete do jornal. A letra vem bem grande por padrão e indica qual é o assunto principal da página.',
+        parent: '<header>',
+        children: 'O próprio texto do título',
+        code: `<h1>Bem-vindo ao Meu Site!</h1>`,
+        tip: 'Uma boa prática para quem está começando: use apenas um <h1> por página para não confundir o Google.'
+      },
+      h2: {
+        tag: '<h2>',
+        type: 'Subtítulo',
+        title: 'Título de Segundo Nível',
+        desc: 'É menor que o <h1>. Serve como um subtítulo para dividir o conteúdo em tópicos menores.',
+        parent: '<header>',
+        children: 'O texto do subtítulo',
+        code: `<h2>Aprenda o Básico de Programação</h2>`,
+        tip: 'Pense como num livro: o <h1> é o nome do livro, e os <h2> são os nomes dos capítulos.'
+      },
+      section_1: {
+        tag: '<section>',
+        type: 'Pedaço de Conteúdo',
+        title: 'Primeira Seção da Página',
+        desc: 'A palavra "section" significa "seção" ou "bloco". Ela avisa ao navegador: "aqui começa um pedaço de conteúdo sobre um determinado tema".',
+        parent: '<div>',
+        children: '<ul> (uma lista)',
+        code: `<section>\n  <h2>Meus Hobbies</h2>\n  <!-- Conteúdo desse bloco -->\n</section>`,
+        tip: 'Usar <section> deixa seu código organizado em vez de deixar tudo solto e misturado.'
+      },
+      section_2: {
+        tag: '<section>',
+        type: 'Outro Pedaço de Conteúdo',
+        title: 'Segunda Seção da Página',
+        desc: 'É uma segunda seção irmã da anterior. No desenho da árvore, essa seção abriga um título menor (<h3>) e um texto pré-formatado (<pre>).',
+        parent: '<div>',
+        children: '<h3> e <pre>',
+        code: `<section>\n  <h3>Contato</h3>\n  <p>Envie uma mensagem!</p>\n</section>`,
+        tip: 'Você pode ter quantas <section> precisar em uma página, uma embaixo da outra.'
+      },
+      ul: {
+        tag: '<ul>',
+        type: 'Lista com Bolinhas',
+        title: 'Lista Não Ordenada',
+        desc: 'A sigla vem de "Unordered List". Cria uma listinha onde a ordem dos itens não tem número, usando marcadores (bolinhas).',
+        parent: '<section>',
+        children: '<li>, <li>, <li>',
+        code: `<ul>\n  <li>Comprar pão</li>\n  <li>Comprar leite</li>\n</ul>`,
+        tip: 'A tag <ul> só serve para criar a lista. O texto de cada item precisa ficar dentro de <li>.'
+      },
+      li: {
+        tag: '<li>',
+        type: 'Item de Lista',
+        title: 'Cada Linha da Lista',
+        desc: 'A sigla vem de "List Item". Cada <li> representa uma linha ou item da lista. No nosso desenho, temos 3 irmãos lado a lado!',
+        parent: '<ul>',
+        children: 'O texto do item',
+        code: `<li>Primeiro item da lista</li>\n<li>Segundo item da lista</li>`,
+        tip: 'Nunca deixe uma tag <li> solta no código. Ela sempre precisa de uma <ul> (bolinhas) ou <ol> (números) por fora.'
+      },
+      h3: {
+        tag: '<h3>',
+        type: 'Título Pequeno',
+        title: 'Subtítulo Menor Ainda',
+        desc: 'É um título menor do que o <h2>. Útil quando você quer colocar um titulozinho dentro de um bloco específico.',
+        parent: '<section>',
+        children: 'O texto do título',
+        code: `<h3>Passo a passo</h3>`,
+        tip: 'Os títulos vão diminuindo de tamanho: <h1> é o maior, <h2> médio, <h3> pequeno, até o <h6>.'
+      },
+      pre: {
+        tag: '<pre>',
+        type: 'Texto com Espaços Preservados',
+        title: 'Texto Pré-formatado',
+        desc: 'Normalmente o HTML ignora espaços extras e "Enter". Mas o <pre> respeita cada espaço e quebra de linha exatamente como você digitou.',
+        parent: '<section>',
+        children: 'O texto com espaços',
+        code: `<pre>\n  Linha 1\n    Linha com espaços\n</pre>`,
+        tip: 'É muito usada por programadores quando querem exibir exemplos de código na tela sem desmanchar o alinhamento.'
+      },
+      footer: {
+        tag: '<footer>',
+        type: 'O Rodapé',
+        title: 'A Parte de Baixo do Site',
+        desc: 'Fica lá no finalzinho da página. Costuma guardar o copyright ("© 2026"), nome do criador ou links de contato.',
+        parent: '<div>',
+        children: '<p>',
+        code: `<footer>\n  <p>Feito por mim - 2026</p>\n</footer>`,
+        tip: 'Assim como uma carta termina com uma assinatura, uma página costuma terminar com um <footer>.'
+      },
+      p: {
+        tag: '<p>',
+        type: 'Parágrafo',
+        title: 'Bloco Comum de Texto',
+        desc: 'É a tag mais usada para escrever textos normais. Cada <p> cria um novo parágrafo e o navegador dá um espacinho em cima e embaixo automaticamente.',
+        parent: '<footer>',
+        children: '<em> e <a>',
+        code: `<p>Olá mundo! Este é o meu texto comum de parágrafo.</p>`,
+        tip: 'Em vez de ficar apertando "Enter" no editor, coloque cada frase ou ideia em um novo <p>...</p>.'
+      },
+      em: {
+        tag: '<em>',
+        type: 'Texto Inclinado (Ênfase)',
+        title: 'Destaque com Itálico',
+        desc: 'A sigla vem de "Emphasis" (ênfase). Ela deixa a palavra inclinada (em itálico) para dar destaque a algo que foi falado.',
+        parent: '<p>',
+        children: 'A palavra em destaque',
+        code: `<p>Eu <em>realmente</em> gostei de aprender HTML!</p>`,
+        tip: 'Use quando quiser dar ênfase a uma palavra no meio de uma frase normal.'
+      },
+      a: {
+        tag: '<a>',
+        type: 'O Link Clicável',
+        title: 'Link que Leva para Outra Página',
+        desc: 'A letra "a" vem de "Anchor" (âncora). É o link azul sublinhado que você clica para abrir outro site ou outra página na internet.',
+        parent: '<p>',
+        children: 'O texto que dá para clicar',
+        code: `<a href="https://google.com">Clique aqui para ir ao Google</a>`,
+        tip: 'O que faz o link funcionar é o pedaço href="link". Sem o href, o texto não fica clicável.'
+      }
+    };
+
+    // ==========================================================================
+    // 🖱️ FUNÇÃO QUE RESPONDE AO CLIQUE NA CAIXINHA
+    // Quando você clica em uma caixa, ela troca o texto do card lateral
+    // ==========================================================================
+    let currentNodeKey = 'html';
+
+    function selectNode(key) {
+      currentNodeKey = key;
+      const data = nodesData[key];
+      if (!data) return;
+
+      // 1. Atualiza os textos do cartão lateral com as informações da tag clicada:
+      document.getElementById('detail-tag-badge').textContent = data.tag;
+      document.getElementById('detail-type').textContent = data.type;
+      document.getElementById('detail-title').textContent = data.title;
+      document.getElementById('detail-desc').textContent = data.desc;
+      document.getElementById('detail-parent').textContent = data.parent;
+      document.getElementById('detail-children').textContent = data.children;
+      document.getElementById('detail-code').textContent = data.code;
+      document.getElementById('detail-tip').textContent = data.tip;
+
+      // 2. Tira a bordinha amarela de todas as outras caixinhas
+      document.querySelectorAll('.svg-node').forEach(node => {
+        node.classList.remove('active');
+      });
+
+      // 3. Coloca a bordinha amarela na caixinha que você acabou de clicar
+      if (key === 'li') {
+        // Se clicou em li, destaca os 3 irmãozinhos li juntos
+        ['svg-node-li1', 'svg-node-li2', 'svg-node-li3'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.classList.add('active');
+        });
+      } else {
+        const activeNode = document.getElementById('svg-node-' + key);
+        if (activeNode) {
+          activeNode.classList.add('active');
+        }
+      }
+    }
+
+    // ==========================================================================
+    // 🪟 FUNÇÃO PARA ABRIR OU FECHAR A JANELINHA DO CÓDIGO INTEIRO
+    // ==========================================================================
+    function toggleRawCodeModal() {
+      const modal = document.getElementById('code-modal');
+      modal.classList.toggle('hidden'); // 'hidden' significa escondido
+    }
+
+    // Liga o botão do topo da página com a função de abrir a janelinha
+    document.getElementById('btn-toggle-raw-code').addEventListener('click', toggleRawCodeModal);
+
+    // Fecha a janelinha se você clicar no fundo escuro fora dela
+    document.getElementById('code-modal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        toggleRawCodeModal();
+      }
+    });
+
+    // ==========================================================================
+    // 📋 FUNÇÃO PARA COPIAR O CÓDIGO
+    // Copia o exemplo para você colar no seu bloco de notas ou VS Code
+    // ==========================================================================
+    function copyCurrentCode() {
+      const codeText = document.getElementById('detail-code').textContent;
+      
+      // Cria uma caixinha temporária de texto só para mandar copiar
+      const tempTextArea = document.createElement('textarea');
+      tempTextArea.value = codeText;
+      document.body.appendChild(tempTextArea);
+      tempTextArea.select();
+      
+      try {
+        document.execCommand('copy');
+        showToast(); // Mostra o avisinho verde de "Copiado!"
+      } catch (err) {
+        console.error('Falha ao copiar:', err);
+      } finally {
+        document.body.removeChild(tempTextArea); // Apaga a caixinha temporária
+      }
+    }
+
+    // Mostra a mensagenzinha verde rápida na parte inferior da tela
+    function showToast() {
+      const toast = document.getElementById('toast');
+      toast.classList.remove('opacity-0');
+      toast.classList.add('opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0');
+      }, 2000); // Some depois de 2 segundos
+    }
+
+    // ==========================================================================
+    // 🚀 INÍCIO AUTOMÁTICO
+    // Assim que a página abre no navegador, já começa com a tag <html> selecionada
+    // ==========================================================================
+    window.addEventListener('DOMContentLoaded', () => {
+      selectNode('html');
+    });
+  </script>
+</body>
+</html>

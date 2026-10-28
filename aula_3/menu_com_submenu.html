@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    /* removendo Bullets da lista */
+    ul {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+        width: 150px;
+    }
+    /*posicionando o submenu para a direita do menu principal*/
+    ul li {
+        position: relative;
+    }
+    /* Estilizando os Sub-menus. cada sub-menu ao lado direto do seu elemento pai assim que passarmos o mouse sobre o elemento pai.
+    Com as propiedades CSS left e TOP podemos posicionar cada item do sub-menu ao lado de seu item pai.
+    o Display: none; para o sub-menu não ficar visível por padrão.
+    Listagem 5: Posicionando Itens do Sub-menu */
+    li ul{
+        position: absolute;
+        left: 149px;
+        top: 0;
+        display: none;
+    }
+    /* Estilizando os links. É importante definir o display: block; para que o link ocupe toda a área do item da lista, facilitando o clique. 
+    Listagem 6: Estilizando os Links */
+    ul li a {
+        display: block;
+        text-decoration: none;
+        color: #E2144A;
+        background-color: #fff;
+        padding: 8px;
+        border: 1px solid #ccc;
+    }
+    /* Estilizando  o menu quado passamos o mouse sobre ele, adicioonando  código da listgem 10, deixado os links em negrito, sublinhado  com background.
+    Listagem 10 Estilizando a Classe Hover */
+    ul li a:hover {
+        font-weight: bold;
+        text-decoration: underline;
+        background: #ccc;
+    }
+    /* Lista 8: Exibindo o submenu ao passar o mouse sobre o item pai. Para exibir o sub-menu, basta alterar a propriedade display do sub-menu para block quando passarmos o mouse sobre o item pai. */
+    li:hover ul {
+        display: block;
+    }
+</style>
+</head>
+<body>
+    <ul>
+        <li><a href="#">Menu 1</a>
+            <ul>
+                <li><a href="#">Sub-menu 1.1</a></li>
+                <li><a href="#">Sub-menu 1.2</a></li>
+                <li><a href="#">Sub-menu 1.3</a></li>
+            </ul>
+        </li>
+        <li><a href="#">Menu 2</a>
+            <ul>
+                <li><a href="#">Sub-menu 2.1</a></li>
+                <li><a href="#">Sub-menu 2.2</a></li>
+                <li><a href="#">Sub-menu 2.3</a></li>
+            </ul>
+        </li>
+        <li><a href="#">Menu 3</a>
+            <ul>
+                <li><a href="#">Sub-menu 3.1</a></li>
+                <li><a href="#">Sub-menu 3.2</a></li>
+                <li><a href="#">Sub-menu 3.3</a></li>
+            </ul>
+        </li>
+
+
+
+</body>
+</html>

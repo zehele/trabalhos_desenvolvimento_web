@@ -1,0 +1,72 @@
+  /* 1. SELETOR UNIVERSAL: Menor especificidade (aplica em tudo como padrão) */
+        * {
+            text-align: center;
+            color: blue;
+            box-sizing: border-box;
+        }
+
+        /* Configuração suave de layout da página */
+        body {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #f8fafc;
+        }
+
+        /* 2. SELETOR DE TAG: Vence o seletor universal nos parágrafos */
+        p {
+            text-align: justify;
+            color: red;
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        /* 3. SELETOR DE CLASSE: Aplica no elemento com class="p" */
+        .p {
+            color: chartreuse;
+            font-size: 2rem;
+            margin-bottom: 24px;
+        }
+
+        /* 4. SELETOR DE ID: Mais forte que a tag e que a classe */
+        #p {
+            color: black;
+            font-weight: 500;
+        }
+
+        /* 5. CLASSE PARA O PARÁGRAFO COM FUNDO PRETO */
+        .fundo-preto {
+            background-color: black;
+            color: white; /* Garante que o texto fique legível sobre o fundo escuro */
+            padding: 16px;
+            border-radius: 8px;
+        }
+        .tamanho{
+            width: 30%;
+            height: 250px;
+            border: 1px solid black;
+            border-radius: 50px 5px;
+        }
+        .espaco{
+            padding: 25px;
+        }
+        .principal{
+            background-color: #f8fafc;
+            width: 100%;
+            padding: 20px;
+            border-radius: 8px;
+            margin: auto
+        }
+        .cor1{
+            background-color: chocolate;
+            color: black;
+        }
+        .cor2{
+            background-color: darkcyan;
+            color: white;
+        }
+        .cor3{
+            background-color: darkgoldenrod;
+            color: rgb(218, 8, 8);
+        }

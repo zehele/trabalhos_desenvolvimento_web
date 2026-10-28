@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formatação em CSS (Pseudo-classes)</title>
+<style>
+    a.estilo1:link {color: #ff0000}
+    a.estilo1:visited {color: #0000ff}
+    a.estilo1:hover {color: #ffcc00}
+
+    a.estilo2:link {color: #ff0000}
+    a.estilo2:visited {color: #0000ff}
+    a.estilo2:hover {font-size: 150%}
+
+    a.estilo3:link {color: #ff0000}
+    a.estilo3:visited {color: #0000ff}
+    a.estilo3:hover {background: #66ff66}
+
+    a.estilo4:link {color: #ff0000}
+    a.estilo4:visited {color: #0000ff}
+    a.estilo4:hover {font-family:'Courier New', Courier, monospace}
+
+    a.estilo5:link {color: #ff0000; text-decoration:none}
+    a.estilo5:visited {color: #0000ff; text-decoration:none}
+    a.estilo5:hover {text-decoration:underline}
+</style>
+</head>
+<body>
+    <p>
+Passe com o ponteiro do mouse sobre os hiperlinks e veja como eles mudam de maneira diferente.
+    </p>        
+
+    <p><a href="#" class="estilo1">Esta muda de cor</a></p>
+    <p><a href="#" class="estilo2">Esta muda o tamanho da fonte</a></p>
+    <p><a href="#" class="estilo3">Esta muda a cor de fundo</a></p>
+    <p><a href="#" class="estilo4">Esta muda a família da fonte</a></p>
+    <p><a href="#" class="estilo5">Esta muda a decoração do texto</a></p>
+    
+
+
+
+</body>
+</html>

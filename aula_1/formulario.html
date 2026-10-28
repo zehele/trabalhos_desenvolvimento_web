@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário</title>
+</head>
+<body>
+    <form action="" method="post">
+
+<br><br>
+<label for="nome">Nome:</label>
+<input type="text" name="nome" placeholder="Digite seu nome" size="50" maxlength="50" required>
+<br><br><br>
+<label for="senha">Senha:</label>
+    <input type="text" type="password" name="senha" placeholder="Digite sua senha" size="50" maxlength="8" required>
+    <br><br><br>
+
+<fieldset> 
+<label for="linguagem">Linguagem de Interesse</label>
+<br><br> 
+<input type="checkbox" name="linguagem[]" value="C++">C++
+<input type="checkbox" name="linguagem[]" value="Java">Java
+<input type="checkbox" name="linguagem[]" value="Python">Python 
+<input type="checkbox" name="linguagem[]" value="PHP">PHP
+
+</fieldset> 
+
+<p><label for="Linguagemescolhida">Linguagem a cursar:</label>
+<br><br>
+<!-- -->
+
+<input type="radio" name="Curso" value="C++">C++
+<input type="radio" name="Curso" value="Java">Java
+<input type="radio" name="Curso" value="Python">Python
+<input type="radio" name="Curso" value="PHP">PHP
+</p>
+
+<select name="escola" id="escola">
+    
+    <option value="C++">C++</option>
+    <option value="Java">Java</option>
+    <option value="Python">Python</option>
+    <option value="PHP">PHP</option>
+
+</select>
+<br><br><br>
+<input type="submit" value="Enviar" id="enviar" value="Enviar">
+
+    </form>
+
+
+</body>
+</html>

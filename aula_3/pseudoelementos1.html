@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo com ::before e Animação</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            padding: 30px;
+            line-height: 1.6;
+        }
+
+        /* 
+           OPÇÃO 1: Usando uma imagem GIF animada real com ::before.
+           O endereço url(...) aponta para um GIF com animação em loop.
+        */
+        h1.com-gif::after {
+            content: url("https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif");
+            margin-right: 14px;
+            vertical-align: middle;
+        }
+
+        /* 
+           OPÇÃO 2 (SUPER DICA): Carinha/Emoji animado com CSS puro (@keyframes)!
+           Não depende de servidores externos e nunca quebra se a conexão oscilar.
+        */
+        h1.com-css::before {
+            content: "😃";
+            display: inline-block;
+            margin-right: 12px;
+            /* Faz o emoji pular continuamente */
+            animation: pular 0.8s infinite alternate ease-in-out;
+        }
+
+        /* Regra de física da animação: faz o elemento subir e aumentar um pouquinho */
+        @keyframes pular {
+            0% {
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                transform: translateY(-8px) scale(1.18);
+            }
+        }
+
+        .card {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+        }
+
+        p {
+            color: #94a3b8;
+            margin-top: 6px;
+        }
+
+        code {
+            background-color: #0f172a;
+            color: #38bdf8;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <!-- Título com GIF animado externo -->
+        <h1 class="com-gif">Planeta em Órbita (GIF Animado)</h1>
+        <p>Aqui o <code>::before</code> carrega um arquivo <strong>.gif com animação real</strong> através do endereço em <code>url(...)</code>.</p>
+    </div>
+
+    <div class="card">
+        <!-- Título com Carinha/Smiley animado por CSS -->
+        <h1 class="com-css">Smiley Animado com CSS Puro</h1>
+        <p>Aqui usamos o emoji da carinha feliz <code>😃</code> combinado com <code>@keyframes</code>, dando vida ao ícone de forma leve e instantânea!</p>
+    </div>
+
+</body>
+</html>

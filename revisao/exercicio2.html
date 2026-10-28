@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Primeiro Perfil</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        img {
+            border-radius: 5%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #1e1e2f;
+            color: white;
+        }
+        .titulo-secao {
+            color: navy;    
+        }
+       
+        .card-formulario {
+            background-color: #f8fafc; 
+            border: 2px solid #1e1e2f; 
+            border-radius: 10px;        
+            padding: 20px;             
+            margin-bottom: 30px;       
+        }
+        
+        .foto-perfil {
+            float: left;
+            margin-right: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* Limpa o fluxo para o próximo título não invadir o lado da foto */
+        .limpa-fluxo {
+            clear: both;
+        }
+
+        /* Transforma lista vertical em horizontal (menu) */
+        .menu-horizontal li {
+            display: inline;
+            margin-right: 15px;
+        }
+        .limpar {
+       clear: both;
+        }
+        ul.lista-horizontal li {
+       display: inline;
+       margin-right: 15px;
+        }    
+        .botao-fixo {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #1e1e2f;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            border: 1px solid white;
+            z-index: 999;
+        }
+    </style>   
+
+</head>
+<body>
+    <p>Meu Perfil:</p>
+    <img src="ze_luiz.jpg" alt="Foto de Perfil" width="200" class="foto-perfil">
+    <h1>Nome: José Luiz</h1>
+    <h2 class="titulo-secao">Área: Analista de Dados</h2>
+    <hr>
+    <p>Meu nome é José Luiz. Tenho 37 anos e sou analista de dados.<br>
+       Estou fazendo faculdade de Ciência de Dados EAD na Uninter.<br>
+    </p>
+
+    <hr class="limpar">
+
+    <h3>Minhas Preferências:</h3>
+    <p>Odeio tudo que for relacionado a front-end, mas gosto de back-end e banco de dados.<br> 
+    </p>
+
+    <h2>Tecnologias de interesse:</h2>
+    <ul>
+        <li>Python</li>
+        <li>SQL
+            <ul>
+                <li>MySQL</li>
+                <li>PostgreSQL</li>
+            </ul>
+        </li>
+        <li>Power BI</li>
+    </ul>    
+    <h2>Rotina de trabalho com Dados:</h2>
+    <ol type = "A">
+        <li>Coleta de dados</li>
+        <li>Limpeza de dados</li>
+        <li>Visualização de dados</li>
+    </ol>
+
+    <h2>Contato:</h2>
+    <a href="https://www.instagram.com/zeh_luiz/" target="_blank">Instagram</a><br> 
+
+    <h2>Projetos e Ferramentas:</h2>
+
+    <table border="1">
+        <tr>
+            <th colspan="3"><strong>Competências Técnicas</strong></th>
+        </tr>
+        <tr>
+            <th>Projeto</th>
+            <th>Aplicação</th>
+            <th>Nível</th>
+        </tr>
+        <tr>
+            <td>Projeto 1</td>
+            <td>Python</td>
+            <td>Intermediário</td>  
+        </tr>
+        <tr>
+            <td>Projeto 2</td>
+            <td>SQL</td>
+            <td>Avançado</td>           
+        </tr>
+        <tr>
+            <td>Projeto 3</td>
+            <td>Power BI</td>
+            <td>Intermediário</td>
+        </tr>
+        <tr>
+            <td rowspan="2">Banco de Dados</td>
+                <td>MySQL</td>
+                <td>Avançado</td>
+        </tr>
+        <tr>
+            <td>PostgreSQL</td>
+            <td>Intermediário</td>  
+        </tr>
+    </table>     
+    <br><br>  
+    <div class="card-formulario">
+        <h2>Formulário de Contato:</h2>
+        <form>
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome">
+            <br><br>
+
+            <label for="email">E-mail:</label>
+            <input type="email" id="email" name="email">
+            <br><br>
+
+            <label for="msg">Mensagem:</label><br>
+            <textarea id="msg" name="mensagem" rows="4" cols="30"></textarea>
+            <br><br>
+
+            <label>Tipo de Contato:</label><br>
+            <input type="radio" id="consultoria" name="tipo" value="consultoria">
+            <label for="consultoria">Consultoria</label>
+
+            <input type="radio" id="orcamento" name="tipo" value="orcamento">
+            <label for="orcamento">Orçamento</label>
+            <br><br>
+
+            <label for="turno">Horário de Preferência:</label>
+            <select id="turno" name="turno">
+                <option value="manha">Manhã</option>
+                <option value="tarde">Tarde</option>
+                <option value="noite">Noite</option>
+            </select>
+            <br><br>    
+
+            <input type="submit" value="Enviar">
+        </form>
+    </div>
+    <a href="#contato" class="botao-fixo">Fale Comigo</a>
+
+  
+
+
+
+</body>
+</html>

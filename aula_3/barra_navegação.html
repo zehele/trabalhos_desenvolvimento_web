@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* ========================================================
+           ESTILOS GERAIS DA PÁGINA (Apenas para ficar bonito)
+           ======================================================== */
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 20px;
+            background-color: #fafafa;
+            color: #333;
+        }
+
+        h2 {
+            margin-top: 30px;
+            margin-bottom: 12px;
+            font-size: 20px;
+            color: #222;
+        }
+
+        /* ========================================================
+           1. BARRA DE NAVEGAÇÃO VERTICAL (O seu código original)
+           ======================================================== */
+        
+        /* A lista que guarda os botões verticais */
+        ul.vertical {
+            list-style-type: none; /* Tira as bolinhas da lista */
+            margin: 0;             /* Tira as margens padrão do navegador */
+            padding: 0;            /* Tira os espaçamentos internos padrão */
+            background-color: #f1f1f1; /* Fundo cinza clarinho */
+            width: 200px;          /* Largura fixa: faz os itens ficarem estreitos */
+            border-radius: 6px;    /* Cantinhos suavemente arredondados */
+            overflow: hidden;      /* Garante que o fundo não passe da borda arredondada */
+        }
+
+        /* Os links dentro de cada item da lista vertical */
+        ul.vertical li a {
+            display: block;        /* Transforma o link em bloco para clicar em toda a área */
+            color: #000;           /* Letra preta */
+            padding: 8px 16px;     /* Espaço interno para o botão ficar gordinho e bom de clicar */
+            text-decoration: none; /* Tira aquele sublinhado azul padrão do link */
+        }
+
+        /* Efeito ao passar o mouse em cima do link vertical */
+        ul.vertical li a:hover {
+            background-color: #555; /* Fundo cinza escuro */
+            color: white;           /* Letra branca */
+        }
+
+        /* ========================================================
+           2. BARRA DE NAVEGAÇÃO HORIZONTAL (Seguindo o mesmo padrão!)
+           ======================================================== */
+
+        /* A lista que guarda os botões horizontais */
+        ul.horizontal {
+            list-style-type: none;  /* Tira as bolinhas da lista */
+            margin: 0;              /* Tira margens padrão */
+            padding: 0;             /* Tira espaçamento padrão */
+            background-color: #f1f1f1; /* Mesmo fundo cinza clarinho do exemplo vertical */
+            text-align: center;         /* Centraliza os botões horizontalmente */
+            border-radius: 6px;     /* Cantinhos arredondados */
+        }
+
+        /* O TRUQUE MÁGICO DA HORIZONTAL: 
+           Faz cada <li> flutuar para a esquerda, ficando lado a lado */
+        ul.horizontal li {
+            display: inline-block;                   /* Alinha os itens lado a lado em vez de um embaixo do outro */
+        }
+
+        /* Os links horizontais usam exatamente as mesmas propriedades do vertical */
+        ul.horizontal li a {
+            display: block;         /* Toda a área do botão fica clicável */
+            color: #000;            /* Letra preta */
+            text-align: center;     /* Centraliza o texto dentro de cada botão */
+            padding: 14px 16px;     /* Altura e largura agradáveis para barra de topo */
+            text-decoration: none;  /* Sem sublinhado */
+        }
+
+        /* Efeito ao passar o mouse: idêntico ao menu vertical */
+        ul.horizontal li a:hover {
+            background-color: #555; /* Fundo cinza escuro */
+            color: white;           /* Letra branca */
+        }
+
+        /* Cardzinho explicativo */
+        .nota {
+            background-color: #e8f4fd;
+            border-left: 4px solid #2196f3;
+            padding: 12px 16px;
+            margin-top: 25px;
+            font-size: 14px;
+            line-height: 1.5;
+            border-radius: 0 6px 6px 0;
+        }
+    </style>
+</head>
+<body>
+ <!-- EXEMPLO 1: BARRA VERTICAL -->
+    <h2>Barra de Navegação vertical</h2>
+
+    <!-- Usamos class="vertical" para conectar com o CSS correspondente -->
+    <ul class="vertical">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+
+
+    <!-- EXEMPLO 2: BARRA HORIZONTAL -->
+    <h2>Barra de Navegação horizontal</h2>
+
+    <!-- Usamos class="horizontal" para conectar com o CSS correspondente -->
+    <ul class="horizontal">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+
+    <!-- Explicação didática dentro da própria página -->
+    <div class="nota">
+        <strong>💡 O que mudou de uma para a outra?</strong><br>
+        1. No <code>ul.horizontal</code> tiramos o <code>width: 200px;</code> para que a barra ocupe a largura da tela.<br>
+        2. Adicionamos <code>float: left;</code> no <code>ul.horizontal li</code> para colocar os botões lado a lado.<br>
+        3. Adicionamos <code>overflow: hidden;</code> no <code>ul.horizontal</code> para a caixinha cinza abraçar os botões flutuantes.
+    </div>
+
+</body>
+</html>

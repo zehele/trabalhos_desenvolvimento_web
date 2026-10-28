@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Primeiro Perfil</title>
+</head>
+<body>
+    <p>Meu Perfil:</p>
+    <img src="ze_luiz.jpg" alt="Foto de Perfil" width="200">
+    <h1>Nome: José Luiz</h1>
+    <h2 class="titulo-secao">Área: Analista de Dados</h2>
+    <hr>
+    <p>Meu nome é José Luiz. Tenho 37 anos e sou analista de dados.<br>
+       Estou fazendo faculdade de Ciência de Dados EAD na Uninter.<br>
+    </p>
+    <h3>Minhas Preferências:</h3>
+    <p>Odeio tudo que for relacionado a front End, mas gosto de back-end e banco de dados.<br> 
+    </p>
+
+    <h2>Tecnologias de interesse:</h2>
+    <ul>
+        <li>Python</li>
+        <li>SQL
+            <ul>
+                <li>MySQL</li>
+                <li>PostgreSQL</li>
+            </ul>
+        </li>
+        <li>Power BI</li>
+    </ul>    
+    <h2>Rotina de trabalho com Dados:</h2>
+    <ol type = "A">
+        <li>Coleta de dados</li>
+        <li>Limpeza de dados</li>
+        <li>Visualização de dados</li>
+    </ol>
+
+    <h2>Contato:</h2>
+    <a href="https://www.instagram.com/zeh_luiz/" target="_blank">Instagram</a><br> 
+
+    <h2>Projetos e Ferramentas:</h2>
+
+    <table border="1">
+        <tr>
+            <th colspan="3"><strong>Competências Técnicas</strong></th>
+        </tr>
+        <tr>
+            <th>Projeto</th>
+            <th>Aplicação</th>
+            <th>Nível</th>
+        </tr>
+        <tr>
+            <td>Projeto 1</td>
+            <td>Python</td>
+            <td>Intermediário</td>  
+        </tr>
+        <tr>
+            <td>Projeto 2</td>
+            <td>SQL</td>
+            <td>Avançado</td>           
+        </tr>
+        <tr>
+            <td>Projeto 3</td>
+            <td>Power BI</td>
+            <td>Intermediário</td>
+        </tr>
+        <tr>
+            <td rowspan="2">Banco de Dados</td>
+                <td>MySQL</td>
+                <td>Avançado</td>
+        </tr>
+        <tr>
+            <td>PostgreSQL</td>
+            <td>Intermediário</td>  
+        </tr>
+    </table>     
+    <br><br>  
+    <h2>Formulário de Contato:</h2>
+    <form>
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome">
+        <br><br>
+
+        <label for="email">E-mail:</label>
+        <input type="email" id="email" name="email">
+        <br><br>
+
+        <label for="msg">Mensagem:</label><br>
+        <textarea id="msg" name="mensagem" rows="4" cols="30"></textarea>
+        <br><br>
+
+        <label>Tipo de Contato:</label><br>
+        <input type="radio" id="consultoria" name="tipo" value="consultoria">
+        <label for="consultoria">Consultoria</label>
+
+        <input type="radio" id="orcamento" name="tipo" value="orcamento">
+        <label for="orcamento">Orçamento</label>
+        <br><br>
+
+        <label for="turno">Horário de Preferência:</label>
+        <select id="turno" name="turno">
+            <option value="manha">Manhã</option>
+            <option value="tarde">Tarde</option>
+            <option value="noite">Noite</option>
+        </select>
+        <br><br>    
+
+        <input type="submit" value="Enviar">
+    </form>
+
+  
+
+
+
+</body>
+</html>
